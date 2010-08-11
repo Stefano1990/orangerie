@@ -1,0 +1,26 @@
+<%= semantic_form_for(@profile,  :html => {:method => :put}) do |f| %>
+
+	<%= f.inputs do %>
+		<%= f.input :age, :label => 'Alter' %>
+		<%= f.input :height, :label => 'Gr&ouml;sse' %>
+		<%= f.input :weight, :label => 'Gewicht' %>
+		<%= f.input :hair_color, :label => 'Haarfarbe' %>
+		<%= f.input :eye_color, :label => 'Augenfarbe' %>
+		<%= f.input :appearance, :label => 'Erscheinungsbild' %>
+		<%= f.input :smoking, :label => 'Raucher', :as => :select, 
+					:collection => ["Nein", "Ja"], :include_blank => false %>
+		<%= f.input :bi_tendency, :label => 'Bi-Neigung' %>
+		<%= f.input :sex_tend, :label => 'Dominant/Devot' %>
+		<%= f.input :about_us, :label => '&Uuml;ber uns' %>
+		<%= f.input :region, :label => 'Region' %>
+		<%= f.input :mobility, :label => 'Mobilit&auml;t' %>
+		<%= f.input :looking_for, :label => 'Ich/Wir suchen' %>
+		<%= f.input :for_text, :label => 'f&uuml;r' %>
+		<%= f.input :dislike, :label => 'M&ouml;gen wir nicht' %>
+		<%= f.input :like, :label => 'M&ouml;gen wir' %>
+		<%= f.input :to_do, :label => 'um zu????' %>
+	<% end %>
+	<%= f.buttons do %>
+		<%= f.commit_button 'Submit' %>
+	<% end %>
+<% end %>

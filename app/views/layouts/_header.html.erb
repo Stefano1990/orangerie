@@ -1,0 +1,19 @@
+<header>
+	<div id="top-box">
+		logo
+			<div id="profil-box">
+				<% unless user_signed_in? %>
+				<%= render 'devise/sessions/new' %>
+				<% else %>
+					<span>Willkommen zur&uuml;ck <%= current_user.name %></span>
+					<%= link_to "Profil bearbeiten", edit_profile_path(current_user) %>
+				<% end %>
+			</div>
+	</div>
+  	<nav>
+    	<ul>
+      		<li><%= link_to "Club", "#" %></li>
+			<li><%= link_to "Club3", "#" %></li>
+    	</ul>
+  	</nav>
+</header>

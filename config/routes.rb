@@ -1,8 +1,16 @@
 Orangerie::Application.routes.draw do
   
-  devise_for :users
+  devise_for :admins
 
-  root :to => "home#index"
+  devise_for :users
+  
+  resources :home
+  resources :profiles
+  
+  resources :users do
+  end
+  
+  root :to => "pages#home"
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

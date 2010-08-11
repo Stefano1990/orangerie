@@ -1,0 +1,22 @@
+<%= semantic_form_for(@infos, :url => update_infos_user_path,  
+											  :html => {:method => :post}) do |f| %>
+
+	<%= f.inputs do %>
+		<%= f.input :age, :label => 'Alter' %>
+		<%= f.input :hair_color, :label => 'Haarfarbe' %>
+		<%= f.input :eye_color, :label => 'Augenfarbe' %>
+		<%= f.input :appearance, :label => 'Erscheinungsbild' %>
+		<%= f.input :smoking, :label => 'Raucher', :as => :select, 
+					:collection => ["Nein", "Ja"], :include_blank => false %>
+		<%= f.input :bi_tendency, :label => 'Bi-Neigung' %>
+		<%= f.input :sex_tend, :label => 'Dominant/Devot' %>
+		<%= f.input :about_us, :label => '&Uuml;ber uns' %>
+		<%= f.input :region, :label => 'Region' %>
+		<%= f.input :mobility, :label => 'Mobilit&auml;t' %>
+		<%= f.input :looking_for, :label => 'Ich/Wir suchen' %>
+		<%= f.input :to_do, :label => 'f&uuml;r' %>
+	<% end %>
+	<%= f.buttons do %>
+		<%= f.commit_button 'Submit' %>
+	<% end %>
+<% end %>
