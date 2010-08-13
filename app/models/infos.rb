@@ -1,4 +1,4 @@
-class Profile < ActiveRecord::Base
+class Infos < ActiveRecord::Base
   belongs_to :user
   
   attr_accessible :sex, :region, :mobility, :about_us, 
@@ -30,5 +30,4 @@ class Profile < ActiveRecord::Base
   def is_couple?
     sex == "Paar"
   end
-  
 end

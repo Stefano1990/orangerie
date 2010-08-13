@@ -8,6 +8,9 @@ body {
 	background-repeat: repeat-x;
 	color: #FFFDE4;
 }
+h4 {
+	color: #FFFDE4;
+}
 header {
   	padding-top: 20px;
 	width: 100%;
@@ -68,4 +71,14 @@ footer {
 }
 #login-box .string, .password {
 	margin-bottom: 5px;
+}
+#profile-navigation ul li {
+	display: inline;
+	padding: 0 20px 0 0;
+	margin: 0;
+}
+#profile {
+	display: block;
+	padding: 0;
+	margin: 0;
 }

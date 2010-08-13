@@ -25,10 +25,26 @@ form.formtastic .inputs {
 form.formtastic .inputs input {
 	font-size: 12px;
 	font-style: italic;
-	width: 20%;
+	width: 60%;
 	background-color: #5d0200;
 	border: none;
 	color: white;
 	padding: 5px 10px 5px 10px;
 
+}
+#form-male {
+	display: inline;
+	width: 49%;
+}
+#form-male li, #form-female li {
+	border-bottom: 1px solid #5d0200;
+	padding: 0 0 10px 0;
+}
+#form-female {
+	display: inline;
+	width: 50%;
+}
+#form-common {
+	display :block;
+	width: 80%;
 }

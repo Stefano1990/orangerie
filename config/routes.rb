@@ -5,11 +5,21 @@ Orangerie::Application.routes.draw do
   devise_for :users
   
   resources :home
-  resources :profiles
+
+  resources :connections
   
-  resources :users do
+  resources :profiles do
+    member do
+      get :infos
+    end
   end
   
+  resources :users do
+    member do
+      get :infos
+      put :edit_infos
+    end
+  end
   root :to => "pages#home"
   
   # The priority is based upon order of creation:

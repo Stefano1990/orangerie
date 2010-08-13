@@ -90,4 +90,29 @@ describe User do
       @user.user_infos.edit(@infos)
     end
   end
+  
+  describe "relationships" do
+     
+    before(:each) do
+      @user = Factory(:user)
+      @user2 = Factory(:user, :email => Factory.next(:email))
+    end
+    
+    it "should have friends" do
+      @user.should respond_to(:friends)
+    end
+    
+    it "should have a become_friend! method" do
+      @user.should respond_to(:become_friend!)
+    end
+    
+    it "should have a accept_request method" do
+      @user.should respond_to(:accept_request)
+    end
+    
+    it "should send a friend request" do
+      @user.become_friend!(@user2)
+      @user.friends.include?(@user2).should be_true
+    end
+  end
 end

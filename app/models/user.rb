@@ -11,7 +11,16 @@ class User < ActiveRecord::Base
   validates_length_of :name, :within => 3..30
   validates_presence_of :name
   
-  has_many    :profile
-  before_create  {|user| user.profile.build(self)}
+  REQUESTED_AND_ACTIVE =  [%(status = ?), Connection::REQUESTED]
+  before_create  {|user| user.build_infos(self)}
   
+  #named_scope :unapproved_requests, where({:user_id => self, :approved => false})
+
+  has_many :connections
+  
+  has_many :contacts, :through => :connections, :order => 'users.created_at DESC'
+  has_many :requested_contacts, :through => :connections,
+             :source => :contact,
+             :conditions => REQUESTED_AND_ACTIVE
+  has_one :infos
 end

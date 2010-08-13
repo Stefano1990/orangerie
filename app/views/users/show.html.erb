@@ -1,1 +1,13 @@
-<%= @user.email %>
+<h3>Hello <%= @user.name %></h3>
+<ul>
+	<li>Geschlecht:</li> <%= @user.infos.sex %>
+	<li>Alter (Mann):</li><%= @user.infos.age_m %>
+</ul>
+<% unless @requests.empty? %>
+	<h4>Friends requests</h4>
+	<ul>
+		<% @requests.each do |contact| %>
+		<li><%= contact.name %></li>
+	<% end %>
+	</ul>
+<% end %>

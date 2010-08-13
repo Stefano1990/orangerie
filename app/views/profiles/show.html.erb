@@ -1,0 +1,15 @@
+<div id="profile-navigation">
+	<ul>
+		<% if own_profile?(@profile) %>
+			<li><%= link_to "Livefeed", "#" %></li>
+		<% end %>
+		<li><%= link_to "Wand", "#" %></li>
+		<li><%= link_to "Infos", "#" %></li>
+		<li><%= link_to "Fotos", "#" %></li>
+	</ul>
+</div>
+<div id="profile">
+	<%= @profile.user.name %><br/>
+	<%= @profile.user.email %>
+</div>
+<br/>

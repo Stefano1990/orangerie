@@ -4,21 +4,21 @@
 		$('#form-female').hide();
 		$('#form-male').hide();
 		
-		$("#profile_sex").val("<%= @profile.sex %>");
+		$("#profile_sex").val("Mann");
 		
-		if ($("#profile_sex :selected").text() == "Mann") {
+		if ($("#_users_<%= @user.id %>_edit_sex :selected").text() == "Mann") {
 			$('#form-male').show('slow');
 		}
-		if ($("#profile_sex :selected").text() == "Frau") {
+		if ($("#_users_<%= @user.id %>_edit_sex :selected").text() == "Frau") {
 			$('#form-female').show('slow');
 		}
 		
-		if ($("#profile_sex :selected").text() == "Paar") {
+		if ($("#_users_<%= @user.id %>_edit_sex :selected").text() == "Paar") {
 			$('#form-female').show('slow'); 
 			$('#form-male').show('slow');
 		}
 		
-	       $("#profile_sex").change(function(){
+	       $("#_users_<%= @user.id %>_edit_sex").change(function(){
 
 			($(this).val() == "Frau") ? $('#form-female').show() : $('#form-female').hide();
 			($(this).val() == "Mann") ? $('#form-male').show() : $('#form-male').hide();
@@ -32,10 +32,10 @@
 	
 </script>
 <% end %>
-<%= semantic_form_for(@profile,  :html => {:method => :put}) do |f| %>
+<%= semantic_form_for(edit_user_path(@user),  :html => {:method => :put}) do |f| %>
 	<%= f.inputs :id => "basic" do %>
       	<%= f.input :sex, :label => 'Geschlecht', :as => :select, :collection => ["Paar", "Mann", "Frau"], 
-												  :include_blank => false,  %>
+												  :include_blank => false %>
     <% end %>
 	<%= f.inputs :id => "form-female",  do %>
 	<h4>Sie:</h4>
