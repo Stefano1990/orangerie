@@ -8,6 +8,7 @@ describe User do
               :password => "foobar",
               :password_confirmation => "foobar"
             }
+    @user = Factory(:user)
   end
   
   it "should create a new instance given valid attributes" do
@@ -78,41 +79,53 @@ describe User do
     end
   end
   
-  describe "user infos" do
-    
-    before(:each) do
-      @infos = { :age => "23",
-                 :weight => "82", 
-                 :hair_color => "Green", 
-                 :appearance => "Thin", 
-                 :about_us => "We like FOO BARS!" }
-      @user = User.create!(@attr)
-      @user.user_infos.edit(@infos)
-    end
-  end
   
-  describe "relationships" do
+  describe "connections(?)" do
+     before(:each) do
+       @user.trusted = true
+       @friend = Factory(:user, :email => Factory.next(:email), :trusted => true)
+     end
      
-    before(:each) do
-      @user = Factory(:user)
-      @user2 = Factory(:user, :email => Factory.next(:email))
-    end
-    
-    it "should have friends" do
-      @user.should respond_to(:friends)
-    end
-    
-    it "should have a become_friend! method" do
-      @user.should respond_to(:become_friend!)
-    end
-    
-    it "should have a accept_request method" do
-      @user.should respond_to(:accept_request)
-    end
-    
-    it "should send a friend request" do
-      @user.become_friend!(@user2)
-      @user.friends.include?(@user2).should be_true
-    end
+     it "should have requested contacts" do
+       Connection.request(@user, @friend)
+       @user.requested_contacts.should_not be_empty
+     end
+     
+     it "should have contacts" do
+       Connection.connect(@friend, @user)
+       #@user.contacts.should == @friend
+       #@friend.contacts.should == @user
+     end
+     
+     describe "common contacts" do
+       
+       before(:each) do
+         @bob = Factory(:user, :email => Factory.next(:email), :trusted => true)
+         Connection.connect(@user, @friend)
+         Connection.connect(@friend, @bob)
+       end
+       
+       it "should have common contacts with someone" do
+         common_contacts = @user.common_contacts_with(@bob)
+         common_contacts.size.should == 1
+         common_contacts.should == [@friend]
+       end
+       
+       it "should exclude not trusted users from list" do
+         @bob.trusted = false
+         common_contacts = @user.common_contacts_with(@friend)
+         common_contacts.should be_empty
+       end
+       
+       it "should exclude the person being viewed" do
+         Connection.connect(@user, @bob)
+         @user.common_contacts_with(@bob).should_not include(@bob)
+       end
+       
+       it "should excluded the person viewing" do
+         Connection.connect(@user, @bob)
+         @user.common_contacts_with(@bob).should_not include(@user)
+       end
+     end
   end
 end

@@ -1,0 +1,9 @@
+<% if is_friend?(@user) or own_profile?%>
+	<%= semantic_form_for(new_user_post_path(@user), :html => {:method => :post} ) do |f| %>
+		<%= f.inputs  do %>
+			<%= f.input :body, :label => 'Body' %>
+			<%= f.input :wall_id, :as => :hidden, :value => @user.id %>
+			<%= f.commit_button 'Senden' %>
+		<% end %>
+	<% end %>
+<% end %>

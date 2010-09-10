@@ -1,13 +1,33 @@
-<h3>Hello <%= @user.name %></h3>
-<ul>
-	<li>Geschlecht:</li> <%= @user.infos.sex %>
-	<li>Alter (Mann):</li><%= @user.infos.age_m %>
-</ul>
-<% unless @requests.empty? %>
-	<h4>Friends requests</h4>
-	<ul>
-		<% @requests.each do |contact| %>
-		<li><%= contact.name %></li>
-	<% end %>
-	</ul>
+<%= content_for :user_navigation do %>
+	<%= render 'users/user_navi' %>
+<% end %>
+
+<%= render 'posts/new' %>
+
+<div id="wall">
+	<%= render 'posts/index' %>
+</div>
+
+
+
+
+<% unless Connection.exists?(current_user, @user) || current_user == @user %>
+	<%= button_to I18n.t('users.show.become_friends'), user_connections_path(@user), :method => :post, :class => "submit-link"  %>
+<% end %>
+<hr/>
+<% if Connection.exists?(@user, current_user) %>
+	<%= button_to "Delete friend", connection_path(Connection.conn(current_user,@user)), 
+	                  :method => :delete, :title => I18n.t('users.show.delete_friend'),
+	             	  :confirm => "Are you sure you want to delete #{@user.name} from your friends list?", 
+					  :remote => true %>
+<% end %>
+<hr/>
+<% if Connection.pending?(current_user, @user) %>
+	<%= @user.name %> has contacted you
+	            <br />
+	(<%= link_to "respond to contact request",edit_connection_path(Connection.conn(current_user,@user)) %>)
+<% end %>
+
+<% if Connection.requested?(current_user, @user) %>
+	You have not yet been accepted as a friend.
 <% end %>

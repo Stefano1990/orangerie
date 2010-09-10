@@ -21,7 +21,7 @@ section {
 	font-family: 'Georgia', 'Palatino',  serif;
 	font-size: 12px;
 	font-style: italic;
-	line-height: 24px;
+	line-height: 26px;
   	margin-top: 1em;
   	font-size: 120%;
 	padding: 20px;
@@ -72,7 +72,7 @@ footer {
 #login-box .string, .password {
 	margin-bottom: 5px;
 }
-#profile-navigation ul li {
+.user-navigation li {
 	display: inline;
 	padding: 0 20px 0 0;
 	margin: 0;
@@ -81,4 +81,54 @@ footer {
 	display: block;
 	padding: 0;
 	margin: 0;
+}
+#user-left-box {
+	display: block;
+	padding: 0;
+	margin: 0;
+	width: 200px;
+	float: left;
+}
+#user-content-box{
+	float: left;
+	display: block;
+	padding: 0;
+	margin: 0;
+	width: 500px;
+}
+#user-content-box table tr th {
+	text-align: center;
+
+}
+#user-content-box table tr td table tr td {
+	border-bottom: 1px solid #5c0200;
+}
+#user-content-box table th {
+	font-weight: normal;
+	font-size: 14px;
+}
+.female-attributes, .male-attributes {
+	width: 30%;
+}
+.attributes {
+	width: 30%;
+}
+.values {
+	width: 10%;
+}
+.categories {
+	width: 15%;
+	vertical-align: top;
+}
+#box-right {
+	float: right;
+	width: 250px;
+}
+h5 {
+	color: #ffd2b5;
+}
+#wall {
+	display: block;
+	float: left;
+	width: 400px;
 }

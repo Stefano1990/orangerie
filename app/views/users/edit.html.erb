@@ -4,27 +4,25 @@
 		$('#form-female').hide();
 		$('#form-male').hide();
 		
-		$("#profile_sex").val("Mann");
-		
-		if ($("#_users_<%= @user.id %>_edit_sex :selected").text() == "Mann") {
-			$('#form-male').show('slow');
+		if ($("#user_infos_attributes_sex :selected").text() == "Mann") {
+			$('#form-male').fadeIn('slow');
 		}
-		if ($("#_users_<%= @user.id %>_edit_sex :selected").text() == "Frau") {
-			$('#form-female').show('slow');
+		if ($("#user_infos_attributes_sex :selected").text() == "Frau") {
+			$('#form-female').fadeIn('slow');
 		}
 		
-		if ($("#_users_<%= @user.id %>_edit_sex :selected").text() == "Paar") {
-			$('#form-female').show('slow'); 
-			$('#form-male').show('slow');
+		if ($("#user_infos_attributes_sex :selected").text() == "Paar") {
+			$('#form-female').fadeIn('slow'); 
+			$('#form-male').fadeIn('slow');
 		}
 		
-	       $("#_users_<%= @user.id %>_edit_sex").change(function(){
+	       $("#user_infos_attributes_sex").change(function(){
 
-			($(this).val() == "Frau") ? $('#form-female').show() : $('#form-female').hide();
-			($(this).val() == "Mann") ? $('#form-male').show() : $('#form-male').hide();
+			($(this).val() == "Frau") ? $('#form-female').fadeIn() : $('#form-female').hide();
+			($(this).val() == "Mann") ? $('#form-male').fadeIn() : $('#form-male').hide();
 			if ($(this).val() == "Paar") {
-				$('#form-female').show(); 
-				$('#form-male').show();
+				$('#form-female').fadeIn(); 
+				$('#form-male').fadeIn();
 			}		
 	      });
 
@@ -32,7 +30,8 @@
 	
 </script>
 <% end %>
-<%= semantic_form_for(edit_user_path(@user),  :html => {:method => :put}) do |f| %>
+<%= semantic_form_for(@user, :html => {:method => :put}) do |g| %>
+	<%= g.inputs :name => 'infos', :for => :infos do |f|%>
 	<%= f.inputs :id => "basic" do %>
       	<%= f.input :sex, :label => 'Geschlecht', :as => :select, :collection => ["Paar", "Mann", "Frau"], 
 												  :include_blank => false %>
@@ -77,5 +76,6 @@
     <% end %>
 	<%= f.buttons do %>
 		<%= f.commit_button 'Submit' %>
+	<% end %>
 	<% end %>
 <% end %>

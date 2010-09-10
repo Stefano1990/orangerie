@@ -1,0 +1,22 @@
+<%= content_for :user_navigation do %>
+	<%= render 'users/user_navi' %>
+<% end %>
+<%= render 'users/left_box' %>
+<% if current_user == @user %>
+	<% @user.requested_contacts.each do |contact| %>
+	<% @connection = Connection.conn(@user, contact) %>
+		<%= contact.name %>
+		<%= semantic_form_for(@connection, :html => {:method => :put}) do |f| %>
+			<%= f.buttons do %>
+				<%= f.commit_button 'Annehmen' %>
+				<%= f.commit_button 'Ablehnen', :id => nil %>
+			<% end %>
+		<% end %>
+	<% end %>
+<% end %>
+<% unless @user.contacts.empty? %>
+	<% @user.contacts.each do |contact| %>
+		<img src="http://orangerieleclub.ch/img/contacts/kein_bild.jpg" alt="Userpic" width="60px" height="60px"/>
+		<%= link_to contact.name, user_path(contact) %>
+	<% end %>
+<% end %>

@@ -1,0 +1,8 @@
+<h4><%= @user.name %>'s Profil</h4>
+<ul class="user-navigation">
+	<% if @user == current_user %><li><%= link_to "Livestream", livestream_user_path(@user) %></li><% end %>
+	<li><%= link_to "Wall", user_path(@user) %></li>
+	<li><%= link_to "Infos", infos_user_path(@user) %></li>
+	<li><%= link_to "Freunde", friends_user_path(@user) %></li>
+	<li><%= link_to "Fotos", fotos_user_path(@user) %></li>
+</ul>

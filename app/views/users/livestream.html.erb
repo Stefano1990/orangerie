@@ -1,0 +1,11 @@
+<%= content_for :user_navigation do %>
+	<%= render 'users/user_navi' %>
+<% end %>
+<h3>What's on your mind?</h3>
+<%= render 'users/left_box' %>
+<%= render 'posts/new' %>
+<% unless @user.activities.nil?%>
+	<% @user.activities.each do |activity| %>
+		<%= livestream_message(activity, true) %>
+	<% end %>
+<% end %>

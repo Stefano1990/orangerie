@@ -10,7 +10,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100813080155) do
+ActiveRecord::Schema.define(:version => 20100821121616) do
+
+  create_table "activities", :force => true do |t|
+    t.integer  "item_id"
+    t.integer  "user_id"
+    t.string   "item_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "activities", ["item_id"], :name => "index_activities_on_item_id"
+  add_index "activities", ["user_id"], :name => "index_activities_on_user_id"
 
   create_table "admins", :force => true do |t|
     t.string   "email",                               :default => "", :null => false
@@ -30,6 +41,19 @@ ActiveRecord::Schema.define(:version => 20100813080155) do
 
   add_index "admins", ["email"], :name => "index_admins_on_email", :unique => true
   add_index "admins", ["reset_password_token"], :name => "index_admins_on_reset_password_token", :unique => true
+
+  create_table "comments", :force => true do |t|
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
+    t.integer  "user_id"
+    t.text     "body"
+    t.boolean  "deleted"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "comments", ["commentable_id"], :name => "index_comments_on_commentable_id"
+  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "connections", :force => true do |t|
     t.integer  "user_id"
@@ -72,6 +96,31 @@ ActiveRecord::Schema.define(:version => 20100813080155) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "infos", ["user_id"], :name => "index_infos_on_user_id"
+
+  create_table "livestreams", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "activity_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "livestreams", ["activity_id"], :name => "index_livestreams_on_activity_id"
+  add_index "livestreams", ["user_id"], :name => "index_livestreams_on_user_id"
+
+  create_table "posts", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "wall_id"
+    t.string   "title"
+    t.text     "body"
+    t.boolean  "deleted",    :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "posts", ["user_id"], :name => "index_posts_on_user_id"
+  add_index "posts", ["wall_id"], :name => "index_posts_on_wall_id"
 
   create_table "profiles", :force => true do |t|
     t.integer  "user_id"

@@ -2,4 +2,9 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  users:
+    flash:
+        not_allowed: "Not allowed."
+    show:
+      become_friends: "Add friend"
+      delete_friend: "Delete friend"

@@ -1,0 +1,116 @@
+<%= content_for :user_navigation do %>
+	<%= render 'users/user_navi' %>
+<% end %>
+<%= render 'users/left_box' %>
+
+<div id="user-content-box">
+	<table border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<th>&nbsp;</th>
+			<th><h5>Sie:</h5></th>
+			<th><h5>Er:</h5></th>
+		</tr>
+		<tr>
+			<td class="categories">
+					Infos:<br/>
+					<% if own_profile? %>
+						<%= link_to "Edit", edit_user_path(@user) %>
+					<% end %>
+				</td>
+			<td class="female-attributes">
+				<table border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td class="attributes">Alter:</td>
+						<td class="values"><%= @infos.age_f%></td>
+					</tr>
+					<tr>
+						<td>Gr&ouml;sse:</td>
+						<td><%= @infos.height_f %></td>
+					</tr>
+					<tr>
+						<td>Gewicht:</td>
+						<td><%= @infos.weight_f %></td>
+					</tr>
+					<tr>
+						<td>Haarfarbe:</td>
+						<td><%= @infos.hair_color_f %></td>
+					</tr>
+					<tr>
+						<td>Augenfarbe:</td>
+						<td><%= @infos.eye_color_f %></td>
+					</tr>
+					<tr>
+						<td>Erscheinungsbild:</td>
+						<td><%= @infos.appearance_f %></td>
+					</tr>
+					<tr>
+						<td>Raucher:</td>
+						<td><%= smoking(@infos.smoking_f) %></td>
+					</tr>
+					<tr>
+						<td>Bi-Neigung:</td>
+						<td><%= @infos.bi_tendency_f %></td>
+					</tr>
+					<tr>
+						<td>Dominant/Devot:</td>
+						<td><%= @infos.sex_tend_f %></td>
+					</tr>
+				</table>
+			</td>
+			<td class="male-attributes">
+				<table border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td class="attributes">Alter:</td>
+						<td class="values"><%= @infos.age_m%></td>
+					</tr>
+					<tr>
+						<td>Gr&ouml;sse:</td>
+						<td><%= @infos.height_m %></td>
+					</tr>
+					<tr>
+						<td>Gewicht:</td>
+						<td><%= @infos.weight_m %></td>
+					</tr>
+					<tr>
+						<td>Haarfarbe:</td>
+						<td><%= @infos.hair_color_m %></td>
+					</tr>
+					<tr>
+						<td>Augenfarbe:</td>
+						<td><%= @infos.eye_color_m %></td>
+					</tr>
+					<tr>
+						<td>Erscheinungsbild:</td>
+						<td><%= @infos.appearance_m %></td>
+					</tr>
+					<tr>
+						<td>Raucher:</td>
+						<td><%= smoking(@infos.smoking_m) %></td>
+					</tr>
+					<tr>
+						<td>Bi-Neigung:</td>
+						<td><%= @infos.bi_tendency_m %></td>
+					</tr>
+					<tr>
+						<td>Dominant/Devot:</td>
+						<td><%= @infos.sex_tend_m %></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td class="categories">
+				&Uuml;ber uns:<br/>
+				<% if own_profile? %>
+					<%= link_to "Edit", edit_user_path(@user) %>
+				<% end %>
+			</td>
+			<td colspan="3">
+				<%= @infos.about_us %>
+			</td>
+		</tr>
+	</table>
+</div>
+<div id="box-right">
+	asdf
+</div>

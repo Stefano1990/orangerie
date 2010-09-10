@@ -8,7 +8,7 @@
 	<script type="text/javascript"
 	 src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 	<%= javascript_include_tag 'application' %>
-
+	
 
 	
   <%= csrf_meta_tag %>
@@ -19,6 +19,7 @@
 	<div class="container">
 		<section>
 			<%= render 'layouts/header' %>
+			<%= yield :user_navigation %>
 			
 			<% flash.each do |key, value| %>
 			     <div class="flash <%= key %>"><%= value %></div>

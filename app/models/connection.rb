@@ -13,13 +13,14 @@
 #
 
 class Connection < ActiveRecord::Base
-  #extend ActivityLogger
+  extend ActivityLogger
   #extend PreferencesHelper
   
   belongs_to :user
   belongs_to :contact, :class_name => "User", :foreign_key => "contact_id"
-  #has_many :activities, :foreign_key => "item_id", :dependent => :destroy,
-  #                      :conditions => "item_type = 'Connection'"
+  has_many :activities, :foreign_key => "item_id", :dependent => :destroy,
+                          :conditions => "item_type = 'Connection'"
+                          
   validates_presence_of :user_id, :contact_id
   
   # Status codes.
@@ -49,9 +50,6 @@ class Connection < ActiveRecord::Base
   
     # Make a pending connection request.
     def request(user, contact, send_mail = nil)
-      #if send_mail.nil?
-      #  send_mail = !global_prefs.nil? && global_prefs.email_notifications? && contact.connection_notifications?
-      #end
       if user == contact or Connection.exists?(user, contact)
         nil
       else
@@ -59,12 +57,6 @@ class Connection < ActiveRecord::Base
           create(:user => user, :contact => contact, :status => PENDING)
           create(:user => contact, :contact => user, :status => REQUESTED)
         end
-        #if send_mail
-        #  # The order here is important: the mail is sent *to* the contact,
-          # so the connection should be from the contact's point of view.
-        #  connection = conn(contact, user)
-        #  PersonMailer.deliver_connection_request(connection)
-        #end
         true
       end
     end
@@ -76,6 +68,8 @@ class Connection < ActiveRecord::Base
         accept_one_side(user, contact, accepted_at)
         accept_one_side(contact, user, accepted_at)
       end
+      log_activity(conn(user,contact))
+      
       # Exclude the first admin to prevent everyone's feed from
       # filling up with new registrants.
       #unless [user, contact].include?(Person.find_first_admin)
@@ -105,7 +99,11 @@ class Connection < ActiveRecord::Base
     end
     
     def accepted?(user, contact)
-      conn(user, contact).status == ACCEPTED
+      unless Connection.conn(user, contact).nil?
+        conn(user, contact).status == ACCEPTED 
+      else
+        false
+      end
     end
     
     def connected?(user, contact)
@@ -113,7 +111,11 @@ class Connection < ActiveRecord::Base
     end
     
     def pending?(user, contact)
-      exist?(user, contact) and conn(contact,user).status == PENDING
+      exist?(user, contact) and conn(contact, user).status == PENDING
+    end
+    
+    def requested?(user, contact)
+      exist?(user, contact) and conn(contact, user).status == REQUESTED
     end
   end
   
@@ -126,11 +128,11 @@ class Connection < ActiveRecord::Base
       conn.update_attributes!(:status => ACCEPTED,
                               :accepted_at => accepted_at)
     end
-  
-    #def log_activity(conn)
-    ##  activity = Activity.create!(:item => conn, :user => conn.user)
-    #  add_activities(:activity => activity, :user => conn.user)
-    #  add_activities(:activity => activity, :user => conn.contact)
-    #end
+    
+    def log_activity(conn)
+      activity = Activity.create!(:item => conn, :user => conn.user)
+      add_activities(:activity => activity, :user => conn.user)
+      add_activities(:activity => activity, :user => conn.contact)
+    end
   end
 end

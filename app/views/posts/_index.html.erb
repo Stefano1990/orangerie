@@ -1,0 +1,52 @@
+<% unless @wallposts.nil? %>
+	<% @wallposts.each do |wallpost| %>
+		<%= wallpost %>
+		<% end %>
+<% end %>
+<% unless @posts.blank? %>
+	<% @posts.each do |post|%>
+	<div style="border: 1px solid red; margin: 0 0 10px 0;">
+		<%= link_to post.user.name, user_path(post.user) %> - <%= post.title %>
+		<p><%= post.body %></p>
+		
+		
+		<div style="border: 1px solid green">
+		<% unless post.comments.blank? %>
+			<% post.comments.each do |comment| %>
+				<%= comment.body %> - by <%= comment.user.name %><br/>
+			<% end %>
+		<% end %>
+		</div>
+		<div id="comment-form">
+		<% semantic_form_for(Comment.new, 
+					:url => user_post_comments_path(post.user, post),  :html => {:method => :post}) do |f| %>
+			<%= f.inputs do %>
+				<%= f.input :body, :label => false %>
+				<%= f.commit_button 'Senden' %>
+			<% end %>
+		<% end %>
+		</div>
+
+
+		
+		<% if own_profile? %>
+			<%= button_to "Delete Post", post_path(post), 
+			                  :method => :delete, :title => "Delete Post",:remote => true %>
+		<% end %>
+	</div>	
+	<% end %>
+
+	
+	
+<% else %>
+	No wall posts yet.
+<% end %>
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+	$('.comment-link').click(function(){
+		var post_id = $(this).parent().attr('class');
+		$('.formtastic /users/'+post_id).fadeIn();
+		return false;
+	});	
+});
+</script>

@@ -5,7 +5,9 @@
 				<%= render 'devise/sessions/new' %>
 				<% else %>
 					<span>Willkommen zur&uuml;ck <%= current_user.name %></span>
-					<%= link_to "Profil bearbeiten", edit_profile_path(current_user) %>
+					<%= link_to "Profil bearbeiten", edit_user_path(current_user)%><br/>
+					<%= link_to "Zum profil.", user_path(current_user) %><br/>
+					<%= link_to "Abmelden", destroy_user_session_path %>
 				<% end %>
 			</div>
 	</div>

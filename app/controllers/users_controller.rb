@@ -1,54 +1,106 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :is_trusted_or_own_profile?, :except => [:create, :update, :edit ]
-  before_filter :correct_user, :except => [:show]
-   
+  before_filter :valid_user?,   :except =>  [:edit, :update]
+  before_filter :user_trusted?, :except =>  [:edit, :update, :infos, :show, :trusted]
+  before_filter :own_profile?,  :only =>    [:edit]
+  before_filter :are_friends?,  :except =>  [:edit, :update, :show, :infos, :friends, :trusted]
+  #before_filter :is_trusted_or_own_profile?, :except => [:create, :update, :edit ]
+  #before_filter :valid_user?, :except => [:edit, :update]
+  #before_filter :user_trusted?, :except => [:edit, :update]
+  #before_filter :correct_user, :except => [:show, :infos, :freunde, :fotos]
+  
+  
+  
+  respond_to :html
+  
+  def index
+    #should get called purely for testing purposes.
+    @users = User.paginate :page => params[:page], :order => 'created_at DESC'
+  end
+  
   def show
-    @requests =  current_user.requested_contacts
+    @user = User.find(params[:id], :include => [:infos])
+    @posts = Post.find_all_by_wall_id(@user, :include => [:user], :order => "created_at DESC" )
+    @commentable = find_commentable  
+    
+    respond_with(@user)
+  end
+  
+  def friends
     @user = User.find(params[:id])
+    respond_with(@user)
   end
   
   def infos
     @user = User.find(params[:id])
+    @infos = @user.infos
+    respond_with(@user)
+  end
+  
+  def fotos
+     @user = User.find(params[:id])
+     respond_with(@user)
   end
   
   def edit
     @user = User.find(current_user.id)
   end
-  
-  def update_infos
-    @user = User.find(current_user.id)
-    @infos = @user.user_infos
-    if @user.user_infos.update_attributes(params[:user_infos])
+
+  def update
+    @user = User.find(params[:id])
+    @infos = @user.infos
+    if @infos.update_attributes(params[:user][:infos_attributes])
       flash[:success] = "Profile updated."
       redirect_to @user
     else
-      render 'edit_infos'
+      render :edit
     end
   end
-
-  def accept_request
-    
+  
+  def livestream
+    @user = User.find(current_user, :include => [:infos])
   end
+  
+  def trusted
+    respond_with(current_user)
+  end
+
   private
   
-      def is_trusted_or_own_profile?
-        unless current_user.trusted || own_profile?(Profile.find(params[:id]))
-          flash[:notice] = "You have to be a trusted member to access this page."
-          redirect_to profile_path(current_user)
+      # A user is valid if he has filled out the minimum information about his profile
+      def valid_user?
+        redirect_to(edit_user_path(current_user)) if current_user.infos.sex.blank?
+      end
+      
+      def user_trusted?
+        redirect_to trusted_user_path unless current_user.trusted
+      end
+      
+      def own_profile?
+        user = User.find(params[:id])
+        unless current_user == user
+          flash[:error] = I18n.t('users.flash.not_allowed')
+          redirect_to user_path(user)
         end
       end
       
-      def own_profile?(profile)
-        current_user.profile == profile
-      end
-      
-      def correct_user
+      def are_friends?
         user = User.find(params[:id])
-        redirect_to(root_path) unless current_user?(user)
+        unless user == current_user
+          unless Connection.accepted?(current_user, user)
+            redirect_to user_path(user)
+          end
+        end
+      end
+
+      def find_commentable
+        params.each do |name, value|
+          if name =~ /(.+)_id$/
+            return $1.classify.constantize.find(value)
+          end
+        end
+        nil
       end
       
-      def current_user?(user)
-        current_user == user
-      end
+      
 end

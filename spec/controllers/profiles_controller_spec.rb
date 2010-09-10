@@ -38,6 +38,7 @@ describe ProfilesController do
             response.should have_selector("li", :id => "profile_#{key}_input")
           end
         end
+
     
       end
     end

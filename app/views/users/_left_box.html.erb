@@ -1,0 +1,8 @@
+<div id="user-left-box">
+	<img src="http://orangerieleclub.ch/img/contacts/kein_bild.jpg" alt="Userpic" /><br/>
+	<h5>&Uuml;ber <%= @user.infos.sex.blank? ? "uns" : "mich" %>:<br/></h5>
+	<% if !@user.infos.about_us.nil? && @user.infos.about_us.length >= 300%>
+		<%= truncate(@user.infos.about_us, :length => 300) %><br/>
+		<%= link_to "lese mehr", infos_user_path(@user) %>
+	<% end %>
+</div>
