@@ -4,7 +4,6 @@ class CreateLivestreams < ActiveRecord::Migration
       t.integer     :user_id
       t.integer     :activity_id
       
-      t.timestamps
     end
     add_index :livestreams, :user_id
     add_index :livestreams, :activity_id

@@ -1,6 +1,8 @@
 .container {
   	width: 1000px;
 	background: #4a0200;
+	margin: 0;
+	padding: 0;
 }
 body {
   	background: #350000;
@@ -8,9 +10,27 @@ body {
 	background-repeat: repeat-x;
 	color: #FFFDE4;
 }
-h4 {
+h2 {
+	padding: 0 0 20px 0;
+	margin: 0;
+	color: #FFFDE4;
+	display: inline;
+}
+h3 {
+	font-size: 14px;
+	padding: 0 0 20px 0;
+	display: inline;
+	margin: 0;
 	color: #FFFDE4;
 }
+h4 {
+	color: #FFFDE4;
+	clear: both;
+}
+h5 {
+	color: #ffd2b5;
+}
+
 header {
   	padding-top: 20px;
 	width: 100%;
@@ -24,8 +44,26 @@ section {
 	line-height: 26px;
   	margin-top: 1em;
   	font-size: 120%;
-	padding: 20px;
+	padding: 0;
 }
+/* general fonts and styles */
+small {
+	font-size: 11px;
+}
+/* links -BEGIN- */
+a {
+	color: #f7e3b3;
+	text-decoration: none;
+}
+a:hover {
+	color: #f7e3b3;
+	text-decoration: underline;
+}
+a:active a:focus{
+	color: #f7e3b3;
+}
+/* links -END- */
+
 /* Navigation */
 
 nav	{
@@ -50,7 +88,6 @@ nav ul li a {
 nav ul li a:hover {
 	color: #FFFDE4;
 }
-
 footer {
 	text-align: center;
 	margin-top: 10px;
@@ -69,66 +106,175 @@ footer {
 	background-color: #6f1101;
 	padding: 10px;
 }
-#login-box .string, .password {
-	margin-bottom: 5px;
-}
-.user-navigation li {
-	display: inline;
-	padding: 0 20px 0 0;
-	margin: 0;
-}
-#profile {
+
+/* BEGIN : USERS/ */
+#left-box {
 	display: block;
-	padding: 0;
-	margin: 0;
-}
-#user-left-box {
-	display: block;
-	padding: 0;
+	padding-right: 20px;
 	margin: 0;
 	width: 200px;
 	float: left;
 }
-#user-content-box{
+#middle-box {
+	float: left; 
+	width: 440px; 
+}
+#wrapper {
+	clear: both; 
+	width: 680px; 
 	float: left;
-	display: block;
+	padding: 0 0 0 20px;
+}
+.user-navigation {
+	clear: both;
+	margin: 0 0 20px 0px;
+	padding: 10px 0 6px 0;
+	border-bottom: 1px dotted #5c0200;
+}
+.user-navigation li {
+	display: inline;
+	margin: 0 0 0 0;
+	padding: 0 20px 0 0;
+}
+.no-decoration {
+	clear: both;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+/* END: USERS/ */
+
+/* BEGIN : USERS/SHOW */
+#user-show-post {
+	clear: both;
+	border-bottom: 1px dotted #5c0200;
+	padding: 20px 0 20px 0;
+}
+#user-show-comment {
+	display: none;
+	margin: 10px 0 0 20px;
+	padding: 0 0 20px 0;
+	border-top: 1px dotted #5c0200;
+}
+#user-show-comment div.comment {
+	border-bottom: 1px dotted #5c0200;
+	padding: 10px 0 0 0;
+	margin: 0 0 0 0;
+}
+#user-show-comment td.user-pic{
+	width: 40px;
+	vertical-align: top;
+}
+#user-show-comment td.comment-body{
+	vertical-align: top;	
+}
+#comment-form form {
+	padding: 10px 0 0 0;
+	margin: 0;
+}
+.user-show-post-content {
+	padding: 10px 0 0 10px;
+}
+.user-pic {
 	padding: 0;
 	margin: 0;
-	width: 500px;
 }
-#user-content-box table tr th {
-	text-align: center;
+/* users/1/show -END- */
+/* messages */
+.messages-inbox {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.messages-inbox {
+	list-style: none;
+	
+}
+.messages-inbox li ul {
+	display: block;
+	clear: both;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.messages-inbox tbody tr td {
+	border-bottom: 1px dotted #5c0200;
+	line-height: 24px;
+}
+.messages-inbox tbody tr td.image {
+	width: 10%;
+}
+.messages-inbox tbody tr td.name {
+	width: 30%;
+}
+.messages-inbox tbody tr td.subject {
+	width: 40%;
+}
+.messages-inbox tbody tr td.date {
+	text-align: right;
+	width: 20%;
+}
+.reply {
+	padding: 10px 0 10px 0;
+	border-bottom: 1px dotted #5c0200;
+}
+/* -BEGIN- Profile pics */
+.small-profile-pic {
+	float: left;
+	padding: 0 4px 0 0;
+}
+.inline-profile-pic {
+	padding-right: 4px;
+	clear: both;
+	vertical-align: middle;
+}
 
+/* -END- profile pics */
+#login-box .string, .password {
+	margin-bottom: 5px;
 }
-#user-content-box table tr td table tr td {
-	border-bottom: 1px solid #5c0200;
+
+
+
+/* users/1/infos */
+.infos tbody tr td table tr td {
+	border-bottom: 1px dotted #5c0200;
 }
 #user-content-box table th {
 	font-weight: normal;
 	font-size: 14px;
 }
 .female-attributes, .male-attributes {
-	width: 30%;
+	width: 75%;
 }
 .attributes {
 	width: 30%;
 }
 .values {
-	width: 10%;
+	width: 30%;
+	text-align: right;
+}
+.infos tbody tr td {
+	border-bottom: 1px dotted #5c0200;
 }
 .categories {
-	width: 15%;
+	width: 25%;
 	vertical-align: top;
+	border: none;
 }
 #box-right {
 	float: right;
 	width: 250px;
 }
-h5 {
-	color: #ffd2b5;
+/* buttons */
+.destroy {
+	float: right;
+	color: #4A0200;
+	border: none;
+	background-color: #5c0200;
+	width: 20px;
+	height: 20px;
 }
-#wall {
-	display: block;
-	float: left;
-	width: 400px;
+.destroy:hover {
+	color: #FFFDE4;
 }

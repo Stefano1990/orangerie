@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100821121616) do
+ActiveRecord::Schema.define(:version => 20100922115747) do
 
   create_table "activities", :force => true do |t|
     t.integer  "item_id"
@@ -55,11 +55,37 @@ ActiveRecord::Schema.define(:version => 20100821121616) do
   add_index "comments", ["commentable_id"], :name => "index_comments_on_commentable_id"
   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
+  create_table "communications", :force => true do |t|
+    t.string   "subject"
+    t.text     "content"
+    t.integer  "parent_id"
+    t.integer  "sender_id"
+    t.integer  "recipient_id"
+    t.datetime "sender_deleted_at"
+    t.datetime "sender_read_at"
+    t.datetime "recipient_deleted_at"
+    t.datetime "recipient_read_at"
+    t.datetime "replied_at"
+    t.string   "type"
+    t.integer  "conversation_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "communications", ["recipient_id"], :name => "index_communications_on_recipient_id"
+  add_index "communications", ["sender_id"], :name => "index_communications_on_sender_id"
+  add_index "communications", ["type"], :name => "index_communications_on_type"
+
   create_table "connections", :force => true do |t|
     t.integer  "user_id"
     t.integer  "contact_id"
     t.integer  "status"
     t.datetime "accepted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "conversations", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -100,14 +126,29 @@ ActiveRecord::Schema.define(:version => 20100821121616) do
   add_index "infos", ["user_id"], :name => "index_infos_on_user_id"
 
   create_table "livestreams", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "activity_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "user_id"
+    t.integer "activity_id"
   end
 
   add_index "livestreams", ["activity_id"], :name => "index_livestreams_on_activity_id"
   add_index "livestreams", ["user_id"], :name => "index_livestreams_on_user_id"
+
+  create_table "messages", :force => true do |t|
+    t.integer  "conversation_id"
+    t.string   "subject"
+    t.text     "content"
+    t.integer  "parent_id"
+    t.integer  "sender_id"
+    t.integer  "recipient_id"
+    t.datetime "sender_deleted_at"
+    t.datetime "sender_read_at"
+    t.datetime "recipient_deleted_at"
+    t.datetime "recipient_read_at"
+    t.datetime "replied_at"
+    t.string   "type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "posts", :force => true do |t|
     t.integer  "user_id"
@@ -156,17 +197,6 @@ ActiveRecord::Schema.define(:version => 20100821121616) do
   end
 
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"
-
-  create_table "relationships", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "friend_id"
-    t.boolean  "approved",   :default => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "relationships", ["friend_id"], :name => "index_relationships_on_friend_id"
-  add_index "relationships", ["user_id"], :name => "index_relationships_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "",    :null => false

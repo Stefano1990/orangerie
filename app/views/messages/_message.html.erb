@@ -1,0 +1,6 @@
+<tr>
+	<td class="image"><img src="/images/rails.png" width="30px" height="30px" class="inline-profile-pic"></td>
+	<td class="name"><%= link_to truncate(message.recipient.name, :length => 20, :separator => ' '), message.recipient %></td>	
+	<td class="subject"><%= link_to truncate(message.subject, :length => 24, :separator => ' '), reply_message_path(message) %></td>	
+	<td class="date"><%= l message.created_at, :format => :short %></td>	
+</tr>

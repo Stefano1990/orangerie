@@ -15,6 +15,9 @@ class User < ActiveRecord::Base
   REQUESTED_AND_ACTIVE =  [%(status = ?), Connection::REQUESTED]
   ACCEPTED = [%(status = ? AND trusted = ?), Connection::ACCEPTED, true]
   FEED_SIZE = 10
+  TRASH_TIME_AGO = 1.month.ago
+  MESSAGES_PER_PAGE = 20
+  
   before_create  {|user| user.build_infos(self)}
   
   #named_scope :unapproved_requests, where({:user_id => self, :approved => false})
@@ -34,6 +37,13 @@ class User < ActiveRecord::Base
   has_many :activities, :through => :livestreams, :order => 'activities.created_at DESC',
                                               :limit => FEED_SIZE, :include => :user
   
+  has_many :sent_messages, :class_name => "Message", :foreign_key => "sender_id", 
+                           :conditions => "sender_deleted_at IS NULL", :dependent => :destroy, 
+                           :order => "created_at DESC" 
+  has_many :recieved_messages, :class_name => "Message", :foreign_key => "recipient_id", 
+                            :conditions => "sender_deleted_at IS NULL", :dependent => :destroy, 
+                            :order => "created_at DESC" 
+  
   attr_reader :per_page
     @@per_page = 10
     
@@ -47,4 +57,19 @@ class User < ActiveRecord::Base
   def trusted?
     trusted
   end
+  
+
+    
+    ## Message methods
+    def trashed_messages(page = 1)
+      conditions = [%((sender_id = :user AND sender_deleted_at > :t) OR
+                      (recipient_id = :user AND recipient_deleted_at > :t)),
+                    { :user => id, :t => TRASH_TIME_AGO }]
+      order = 'created_at DESC'
+      trashed = Message.paginate(:all, :conditions => conditions,
+                                       :order => order,
+                                       :page => page,
+                                       :per_page => MESSAGES_PER_PAGE)
+    end
+
 end

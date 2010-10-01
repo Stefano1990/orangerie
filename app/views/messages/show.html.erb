@@ -1,0 +1,8 @@
+<% if current_user?(@message.sender) %>
+	<h3>Message sent to <%= @message.recipient.name %></h3>
+<% else %>
+	<h3>Message from <%= @message.sender.name %></h3>
+<% end %>
+
+<%= @message.subject %><br/>
+<%= @message.content %>

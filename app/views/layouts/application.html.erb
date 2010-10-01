@@ -2,18 +2,11 @@
 <html>
 <head>
   <title><%= title %></title>
-  <%= render 'layouts/stylesheets' %>
+  	<%= render 'layouts/stylesheets' %>
+	<%= render 'layouts/javascripts' %>
+  	<%= csrf_meta_tag %>
 
-
-	<script type="text/javascript"
-	 src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-	<%= javascript_include_tag 'application' %>
-	
-
-	
-  <%= csrf_meta_tag %>
-
-  <%= yield :head %>
+  	<%= yield :head %>
 </head>
 <body>
 	<div class="container">

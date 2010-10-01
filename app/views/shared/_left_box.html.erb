@@ -1,0 +1,19 @@
+<img src="/images/rails.png" width="200px" height="200px" class="small-profile-pic">
+<p>
+	About me:<br/>
+	<%= !@user.infos.about_us.nil? ? @user.infos.about_us : "No description yet." %>
+</p>
+<p>
+	My friends:<br/>
+	<% unless @user.contacts.empty? %>
+		<%= render :partial => "users/friends_list" %>
+	<% else %>
+		No friends yet.
+	<% end %>
+</p>
+<p>
+	<%= send_message_link(@user, image=true) %>
+</p>
+<p>
+	<%= connection_button(@user, current_user) %>
+</p>

@@ -8,3 +8,13 @@ en:
     show:
       become_friends: "Add friend"
       delete_friend: "Delete friend"
+    posts:
+      delete:           "Delete post"
+    
+    comments:
+      delete:   "Delete comment"
+    
+      
+  time:
+    formats:
+      short:      "%e. %b"

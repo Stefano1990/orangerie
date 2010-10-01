@@ -1,41 +1,67 @@
-<% unless @wallposts.nil? %>
-	<% @wallposts.each do |wallpost| %>
-		<%= wallpost %>
+<% unless @stream.blank? %>
+	<% @stream.each do |post|%>
+	<% if post.class.to_s == "Activity" %>
+	 	<% livestream_message(post) %>
+	<% else %>
+	<div id="user-show-post">
+		<% if current_user?(post.user) or current_user?(post.owner)%>
+			<%= button_to "X", user_post_path(@user.id, post.id), 
+  			        :method => :delete, :title => I18n.t('users.posts.delete'),
+  			        :confirm => "?", 
+  					:remote => true,
+ 					:class => "destroy", %>
 		<% end %>
-<% end %>
-<% unless @posts.blank? %>
-	<% @posts.each do |post|%>
-	<div style="border: 1px solid red; margin: 0 0 10px 0;">
-		<%= link_to post.user.name, user_path(post.user) %> - <%= post.title %>
-		<p><%= post.body %></p>
+		<img src="/images/rails.png" width="30px" height="30px" class="inline-profile-pic">
+		<%= link_to post.user.name, user_path(post.user) %> wrote <%= distance_of_time_in_words_to_now(post.created_at) %> ago:
+		<p class="user-show-post-content">"<%= post.body %>"</p>
 		
-		
-		<div style="border: 1px solid green">
-		<% unless post.comments.blank? %>
-			<% post.comments.each do |comment| %>
-				<%= comment.body %> - by <%= comment.user.name %><br/>
-			<% end %>
-		<% end %>
+		<div id="user-show-post-comments">
+		<a href="#" class="show-comment" data-id="<%= post.id %>">[+] show <%= post.comments.count %> comments</a>
+			<div id="user-show-comment" data-id="<%= post.id %>">
+				<% unless post.comments.blank? %>
+					<% post.comments.each do |comment| %>
+						<div class="comment">
+							<table border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<td class="user-pic"><img src="/images/rails.png" width="30px" height="30px" class="inline-profile-pic"></td>
+									<td class="comment-body">
+										<% if current_user?(comment.user) or current_user?(@user)%>
+											<%= button_to "X", user_post_comment_path(@user.id, comment.commentable.id, comment.id), 
+								  			        :method => :delete, :title => I18n.t('users.comments.delete'),
+								  			        :confirm => "?", 
+								  					:remote => true,
+								 					:class => "destroy", %>
+										<% end %>
+										<%= comment.body %><br/>
+										<small><%= distance_of_time_in_words_to_now(comment.created_at) %>
+								 		ago by <%= link_to(comment.user.name, comment.user) %></small>
+									</td>
+								</tr>
+							</table>
+						</div>
+					<% end %>
+				<% end %>	
+				<div id="comment-form">
+					<% semantic_form_for(Comment.new, 
+								:url => user_post_comments_path(post.user, post),  
+								:html => {:method => :post}) do |f| %>
+						<img src="/images/rails.png" width="30px" height="30px" class="inline-profile-pic">
+						<%= f.inputs do %>
+							<%= f.input :body, :label => false %>
+							<%= f.commit_button 'Senden' %>
+						<% end %>
+					<% end %>
+				</div>
+			</div>
 		</div>
-		<div id="comment-form">
-		<% semantic_form_for(Comment.new, 
-					:url => user_post_comments_path(post.user, post),  :html => {:method => :post}) do |f| %>
-			<%= f.inputs do %>
-				<%= f.input :body, :label => false %>
-				<%= f.commit_button 'Senden' %>
-			<% end %>
-		<% end %>
-		</div>
-
-
 		
-		<% if own_profile? %>
+		<% if current_user?(@user) %>
 			<%= button_to "Delete Post", post_path(post), 
 			                  :method => :delete, :title => "Delete Post",:remote => true %>
 		<% end %>
 	</div>	
 	<% end %>
-
+<% end %>
 	
 	
 <% else %>
@@ -47,6 +73,11 @@ $(document).ready(function() {
 		var post_id = $(this).parent().attr('class');
 		$('.formtastic /users/'+post_id).fadeIn();
 		return false;
-	});	
+	});
+	$('.show-comment').click(function(){
+		var post_id = $(this).attr("data-id");
+		$('div[data-id='+post_id+']').fadeIn();
+		return false;
+	});
 });
 </script>

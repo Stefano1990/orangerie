@@ -1,0 +1,40 @@
+body {
+  	background: #350000;
+  	background-image: url('/images/bg.png');
+	background-repeat: repeat-x;
+	color: #FFFDE4;
+}
+header {
+  	padding-top: 20px;
+	width: 100%;
+	float: left;
+}
+section {
+	color: #FFFDE4;
+	font-family: 'Georgia', 'Palatino',  serif;
+	font-size: 12px;
+	font-style: italic;
+	line-height: 26px;
+  	margin-top: 1em;
+  	font-size: 120%;
+	padding: 20px;
+}
+/* general fonts and styles */
+small {
+	font-size: 11px;
+}
+/* links -BEGIN- */
+a {
+	color: #f7e3b3;
+	text-decoration: none;
+}
+a:hover {
+	color: #f7e3b3;
+	text-decoration: underline;
+}
+/* links -END- */
+
+/* content box */
+#content {
+
+}

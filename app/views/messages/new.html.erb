@@ -1,0 +1,25 @@
+<%= semantic_form_for(@message, :url => user_messages_path(@recipient)) do |f| %>
+	<%= f.inputs do %>
+		<%= f.input :subject, :required => false%>
+		<%= f.input :content, :required => false, :input_html => {:id => "txtArea", :rows => "8",
+																  :cols => "50"} %>
+		<%= f.input :parent_id, :as => :hidden %>
+		<%= f.commit_button 'Send' %>
+	<% end %>
+<% end %>
+<!-- Displayes the parent messages -->
+<% if @message.reply? %>
+	<% parent = @message.parent %>
+	<% while !parent.nil? do %>
+		<div class="reply">
+			<%= link_to parent.sender.name, parent.sender %> wrote on <%= parent.created_at %><br/>
+			<p><%= simple_format(parent.content) %>
+			<% parent = parent.parent %></p>
+		</div>
+	<% end %>
+<% end %>
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function(){
+		$("#txtArea").autoGrow();
+	});
+</script>

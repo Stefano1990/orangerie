@@ -1,0 +1,9 @@
+ <% if @messages.empty? %>
+	<h3 class="blankslate">No messages (yet!)</h3>
+<% else %>
+<%= will_paginate %>
+<table class="messages-inbox">
+	<%= render :partial => @messages %>
+</table>
+<%= will_paginate %>
+<% end %>

@@ -1,0 +1,17 @@
+<ul class="user-navigation">
+	<% if current_user?(@user) %>
+		<li><%= link_to "Livestream", livestream_user_path(@user) %></li>
+	<% end %>	
+	<li><%= link_to "Wall", user_path(@user) %></li>
+	<li><%= link_to "Infos", infos_user_path(@user) %></li>
+	<li><%= link_to "Freunde", friends_user_path(@user) %></li>
+	<li><%= link_to "Fotos", fotos_user_path(@user) %></li>
+	<% if current_user?(@user) %>
+		<li><%= link_to "Messages", messages_path %></li>
+	<% end %>
+	<% if current_user?(@user) and params[:controller] == "messages" %>
+		<li style="float: right"><%= link_to "Trash", trash_messages_path %></li>
+		<li style="float: right"><%= link_to "Sent", sent_messages_path %></li>
+		<li style="float: right"><%= link_to "Inbox", messages_path %></li>
+	<% end %>
+</ul>

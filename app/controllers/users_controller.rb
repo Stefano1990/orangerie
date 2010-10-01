@@ -20,7 +20,10 @@ class UsersController < ApplicationController
   
   def show
     @user = User.find(params[:id], :include => [:infos])
-    @posts = Post.find_all_by_wall_id(@user, :include => [:user], :order => "created_at DESC" )
+    @posts = @user.wall_posts
+    
+    #create the stream
+    @stream = @posts
     @commentable = find_commentable  
     
     respond_with(@user)
@@ -58,15 +61,22 @@ class UsersController < ApplicationController
   end
   
   def livestream
-    @user = User.find(current_user, :include => [:infos])
+    @user = User.find(current_user, :include => [:connections, :livestreams])
+    @livestream = @user.livestreams.includes(:activity)
+    #@livestream = Livestream.where(:user_id => @user)
   end
   
   def trusted
-    respond_with(current_user)
+    @user = current_user
+    respond_with(@user)
   end
 
   private
   
+      def create_stream(user)
+        stream = user.posts + user.activities
+        stream.sort! {|x,y| y.created_at <=> x.created_at }
+      end
       # A user is valid if he has filled out the minimum information about his profile
       def valid_user?
         redirect_to(edit_user_path(current_user)) if current_user.infos.sex.blank?

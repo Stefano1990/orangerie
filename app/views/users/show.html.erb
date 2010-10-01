@@ -1,33 +1,12 @@
-<%= content_for :user_navigation do %>
-	<%= render 'users/user_navi' %>
+<% if Connection.connected?(@user, current_user) or current_user?(@user) %>
+	<% if current_user?(@user) %>
+		What's on your mind?
+	<% else %>
+		You want to write something on <%= @user.name %>'s wall?
+	<% end %>
+	<%= render 'posts/new' %>
 <% end %>
-
-<%= render 'posts/new' %>
-
-<div id="wall">
-	<%= render 'posts/index' %>
-</div>
-
-
-
-
-<% unless Connection.exists?(current_user, @user) || current_user == @user %>
-	<%= button_to I18n.t('users.show.become_friends'), user_connections_path(@user), :method => :post, :class => "submit-link"  %>
-<% end %>
-<hr/>
-<% if Connection.exists?(@user, current_user) %>
-	<%= button_to "Delete friend", connection_path(Connection.conn(current_user,@user)), 
-	                  :method => :delete, :title => I18n.t('users.show.delete_friend'),
-	             	  :confirm => "Are you sure you want to delete #{@user.name} from your friends list?", 
-					  :remote => true %>
-<% end %>
-<hr/>
-<% if Connection.pending?(current_user, @user) %>
-	<%= @user.name %> has contacted you
-	            <br />
-	(<%= link_to "respond to contact request",edit_connection_path(Connection.conn(current_user,@user)) %>)
-<% end %>
-
-<% if Connection.requested?(current_user, @user) %>
-	You have not yet been accepted as a friend.
+<%= render 'posts/index' %>
+<% unless Connection.connected?(@user, current_user) or current_user?(@user) %>
+	<p><small>You have to be friends to write on somebody's wall</small></p>
 <% end %>

@@ -22,6 +22,16 @@ class CommentsController < ApplicationController
     end
   end
   
+  def destroy
+    @comment = Comment.find(params[:id])
+    if @comment.destroy
+      flash[:success] = "Comment destroyed"
+      respond_to do |format|
+        format.html { redirect_to user_path(params[:user_id]) }
+      end
+    end
+  end
+  
   private
       def authorize_create
         @post = Post.find(params[:post_id])
@@ -34,8 +44,8 @@ class CommentsController < ApplicationController
       end
       
       def authorize_destroy
-        @post = Post.find(params[:id])
-        redirect_to user_path(@post.owner) unless own_wall?(@post.owner)
+        @comment = Comment.find(params[:id])
+        redirect_to user_path(@comment.commentable.owner) unless @comment.user == current_user
       end
       
       def is_friend?(post_owner)

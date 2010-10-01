@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.0.rc'
 gem 'sqlite3-ruby', :require => 'sqlite3'
-gem 'will_paginate', '>= 3.0.pre'
+gem 'will_paginate', '~> 3.0.pre2'
 gem 'devise', :git => 'git://github.com/plataformatec/devise.git'
 gem 'formtastic', :git => "http://github.com/justinfrench/formtastic.git", :branch => "rails3"
 gem 'validation_reflection', '>= 1.0.0.rc.1'

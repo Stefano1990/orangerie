@@ -6,10 +6,6 @@ class PostsController < ApplicationController
   before_filter :trusted
   before_filter :authorize_create, :except => [:index, :destroy]
   before_filter :authorize_destroy, :except => [:index, :create]
-
-  
-  
-  
   
   def create
     @post = current_user.posts.build(params[:post])
@@ -24,11 +20,14 @@ class PostsController < ApplicationController
   end
   
   def destroy
-    @post.destroy
-    
-    flash[:success] = "Post destroyed"
-    respond_to do |format|
-      format.html { redirect_to user_path(@post.wall_id) }
+    if @post.destroy
+      flash[:success] = "Post destroyed"
+      respond_to do |format|
+        format.html { redirect_to user_path(@post.wall_id) }
+      end
+    else  
+      flash[:error] = "The wall post was not deleted."
+      redirect_to user_path(@post.owner)
     end
   end
   
@@ -45,7 +44,7 @@ class PostsController < ApplicationController
       
       def authorize_destroy
         @post = Post.find(params[:id])
-        redirect_to user_path(@post.owner) unless own_wall?(@post.owner)
+        redirect_to user_path(@post.owner) unless @post.user == current_user or @post.owner == current_user
       end
       
       def is_friend?(wall_owner)

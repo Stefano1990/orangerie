@@ -56,8 +56,10 @@ module ActivityLogger
     end
   
     def do_livestream_insert(users_ids, activity_id)
-      sql = %(INSERT INTO livestreams (user_id, activity_id) 
-              VALUES #{values(users_ids, activity_id)})
-      ActiveRecord::Base.connection.execute(sql)
+      users_ids.each do |k,v|
+        sql = %(INSERT INTO livestreams (user_id, activity_id) 
+              VALUES (#{k}, #{activity_id}))
+        ActiveRecord::Base.connection.execute(sql)
+      end
     end
 end

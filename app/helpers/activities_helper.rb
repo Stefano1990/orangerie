@@ -1,21 +1,44 @@
 module ActivitiesHelper
 
   # Given an activity, return a message for the livestream for the activity's class.
-  def livestream_message(activity, recent = false)
+  def livestream_message(activity, own_wall = false)
     user = activity.user
     case activity_type(activity)
    
     when "Connection"
-        if recent
-          raw %(connected with #{link_to activity.item.contact.name, activity.item.contact} ) 
+        if own_wall
+          raw %(<div id="user-show-post">You are now friends with #{connection_link(activity.item, false)}</div>) 
         else
-          raw %(#{link_to activity.item.contact.name, activity.item.contact} and
-            #{link_to activity.item.user.name, activity.item.user} have connected)
+          raw %(<div id="user-show-post">#{connection_link(activity.item, true)} and
+            #{connection_link(activity.item, false)} are now friends.</div>)
         end
     
     when "Post"
-      raw %(#{activity.item.contact.name} wrote on his wall: 
-      #{truncate(activity.item.body, :length => 20)} ) 
+      item = activity.item
+      relationship = relationship(item)
+      case relationship
+        
+        when 1
+          raw %(<div id="user-show-post">You wrote on your own wall: <br/>
+              #{truncate(item.body, :length => 20)}</div>)
+        when 2
+          raw %(<div id="user-show-post">#{link_to item.user.name, item.user} wrote on your wall</div>)
+        when 3
+          raw %(<div id="user-show-post">#{link_to item.user.name, item.user} wrote on his wall</div>)
+        when 4
+          raw %(<div id="user-show-post">You wrote on #{link_to item.user.name, item.user}'s wall</div>)
+        when 5
+          raw %(<div id="user-show-post">#{link_to item.user.name, item.user} wrote on 
+              #{link_to item.owner.name, item.owner}'s wall</div>)
+      end
+      
+    when "Comment"
+        if own_wall
+          raw %(<div id="user-show-post">You are commented on your own wall #{connection_link(activity.item)}</div>) 
+        else
+          raw %(<div id="user-show-post">#{link_to activity.item.contact.name, activity.item.contact} and
+            #{link_to activity.item.user.name, activity.item.user} are now friends.</div>)
+        end
     end
     
   end
@@ -24,17 +47,28 @@ module ActivitiesHelper
     link ? "#{person_link_with_image(person)}'s" : "#{h person.name}'s"
   end
   
+  def connection_link(item, contact = false)
+    contact ? link_to(item.contact.name, item.contact) : link_to(item.user.name, item.user)
+  end
+  
   def blog_link(text, blog)
     link_to(text, blog_path(blog))
   end
   
-  def post_link(text, blog, post = nil)
-    if post.nil?
-      post = blog
-      blog = text
-      text = post.title
+  def post_link(item, contact = false)
+    if item.wall_id == item.user_id 
+      # person comments on his/her own wall
     end
-    link_to(text, blog_post_path(blog, post))
+    if item.wall_id == current_user.id
+      # post on own wall but not known if the owner of the profile wrote the post
+      if item.user_id == current_user.id
+        # post is on the own wall and the owner of the profile wrote the post
+      else
+        # post is on own wall but the owner of the post is different
+      end
+    end
+    
+    contact ? link_to(item.owner.name, item.owner) : link_to(item.user.name, item.user)
   end
   
   def topic_link(text, topic = nil)
@@ -73,7 +107,32 @@ module ActivitiesHelper
     link_to(text, event_path(event))
   end
 
-
+  def relationship(item) 
+    user = item.user
+    contact = item.owner if item.respond_to? :owner
+    contact = item.contact if item.respond_to? :contact
+    
+    
+    
+    if current_user != contact or current_user != user
+      return 5
+    else
+      if current_user == contact
+        if current_user == user
+          return 1
+        else
+          return 2
+        end
+      else
+        if contact == user
+          return 3
+        else
+          return 4
+        end
+      end
+    end
+    
+  end
   # Return a link to the wall.
   def wall(activity)
     commenter = activity.person

@@ -46,7 +46,7 @@ class ConnectionsController < ApplicationController
       case params[:commit]
       when "Annehmen"
         @connection.accept
-        flash[:notice] = %(Accepted connection with
+        flash[:notice] = raw %(Accepted connection with
                            <a href="#{user_url(contact)}">#{name}</a>)
         format.html { redirect_to(user_path(@connection.contact)) }
       when "Ablehnen"

@@ -22,18 +22,18 @@ form.formtastic .inputs {
 	padding: 0px;
 	margin: 0px;
 }
-form.formtastic .inputs input, #new_post textarea {
-	font-size: 12px;
+form.formtastic .inputs input, #new_post textarea, #message_content_input textarea {
+	font-size: 14px;
 	font-style: italic;
-	width: 60%;
+	width: 70%;
 	background-color: #5d0200;
 	border: none;
-	color: white;
-	padding: 5px 10px 5px 10px;
+	color: #FFFDE4;
+	padding: 5px 10px 5px 5px;
+	outline-width:0;
 }
-#form-male {
-	display: inline;
-	width: 49%;
+form.formtastic .inputs input, #new_post textarea, #message_content_input textarea:focus {
+	outline-width:0;
 }
 #form-male li, #form-female li {
 	border-bottom: 1px solid #5d0200;
@@ -47,20 +47,60 @@ form.formtastic .inputs input, #new_post textarea {
 	display :block;
 	width: 80%;
 }
+/* USERS comments and posts forms */
+#new_comment textarea {
+	background-color: #5d0200;
+	display: block-inline;
+	margin: 0;
+	border: none;
+	padding: 5px;
+	float: right;
+	width: 93%;
+	height: 50px;
+	color: #FFFDE4;
+	font-style: italic;
+}
+#new_comment img {
+	float: left;
+}
+#new_comment input {
+	width: 80px;
+	float: right;
+}
 #new_post  {
 	display: block;
 	float: left;
-	width: 400px;
+	width: 100%;
+}
+#new_post li {
+	margin: 0;
+	padding: 0;
 }
 #new_post textarea {
-	width: 300px;
-	height: 50px;
+	line-height: 18px;
+	padding: 5px 5px 5px 5px;
+	margin: 0;
+	overflow: hidden;
+	width: 430px;
+	height: 60px;
 }
-#new_comment form .submit {
+#new_post .create {
+	margin: 0;
+	float: right;
 	width: 80px;
-	float:right;
 }
-#new_comment textarea {
-	width: 300px;
-	height: 50px;
+/* message form */
+#new_message {
+	width: 100%;
+	border-bottom: 1px dotted #5c0200;
+}
+#txtArea {
+	overflow: hidden;
+	height: auto;
+	width: 406px;
+}
+#new_message fieldset ol li.commit input {
+	float: right;
+	margin: 0 7px 0 0;
+	width: 80px;
 }

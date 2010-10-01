@@ -6,6 +6,17 @@ Orangerie::Application.routes.draw do
   
   resources :home, :connections, :posts
   
+  resources :messages do
+    collection do
+      get :sent
+      get :trash
+    end
+    member do
+      get :reply
+      put :undestroy
+    end
+  end
+  
   #resources :profiles do
   #  member do
   #    get :infos
@@ -15,6 +26,7 @@ Orangerie::Application.routes.draw do
   resources :users do
     get :trusted
     resources :connections
+    resources :messages
     resources :posts do
       resources :comments
     end
